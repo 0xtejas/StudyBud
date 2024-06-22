@@ -1,0 +1,44 @@
+services:
+  mysql:
+    container_name: mysql
+    image: mysql
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+      - 33060:33060
+    volumes:
+      - mysql:/var/lib/mysql
+    env_file:
+      - ./mysql/.env
+  backend:
+    container_name: backend
+    image: backend:custom
+    build: .
+    restart: unless-stopped
+    expose:
+      - 8000
+    volumes:
+      - static:/usr/src/app/static
+      - media:/usr/src/app/media
+    command: gunicorn studybud.wsgi:application --bind 0.0.0.0:8000 -w 2 --access-logfile - --error-logfile -
+    depends_on:
+      - mysql
+  nginx:
+    container_name: nginx
+    image: nginx:custom
+    build: ./nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - static:/usr/src/app/static
+      - media:/usr/src/app/media
+    depends_on:
+      - backend
+volumes:
+  mysql:
+    external: true
+  static:
+    external: false
+  media:
+    external: true
