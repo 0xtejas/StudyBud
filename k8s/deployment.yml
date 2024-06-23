@@ -41,7 +41,7 @@ spec:
           - -c
           - |
             ./entrypoint.sh
-            cp -r /usr/src/app/static/ /var/www/html/
+            ln -s /usr/src/app/static/ /var/www/html/
             gunicorn studybud.wsgi:application --bind 0.0.0.0:8000 -w 2 --access-logfile - --error-logfile -
         resources:
           requests:
