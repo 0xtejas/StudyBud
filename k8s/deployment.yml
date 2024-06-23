@@ -26,7 +26,7 @@ spec:
             memory: 400Mi
         volumeMounts:
         - name: static
-          mountPath: /usr/src/app/static
+          mountPath: /var/www/html/static
         - name: media
           mountPath: /usr/src/app/media
         - name: nginx-config
@@ -35,7 +35,13 @@ spec:
         image: ghcr.io/0xtejas/studybud:k8-latest
         ports:
         - containerPort: 8080
-        command: ["sh", "-c", "./entrypoint.sh && gunicorn studybud.wsgi:application --bind 0.0.0.0:8000 -w 2 --access-logfile - --error-logfile -"]
+        command: 
+          - sh
+          - -c
+          - |
+            ./entrypoint.sh
+            cp -r /usr/src/app/static/ /var/www/html/
+            gunicorn studybud.wsgi:application --bind 0.0.0.0:8000 -w 2 --access-logfile - --error-logfile -
         resources:
           requests:
             cpu: 100m
@@ -45,7 +51,7 @@ spec:
             memory: 200Mi
         volumeMounts:
         - name: static
-          mountPath: /usr/src/app/static
+          mountPath: /var/www/html/static
         - name: media
           mountPath: /usr/src/app/media
       - name: mysql
