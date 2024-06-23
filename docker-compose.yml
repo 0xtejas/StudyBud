@@ -39,6 +39,6 @@ volumes:
   mysql:
     external: true
   static:
-    external: false
+    external: true
   media:
     external: true
