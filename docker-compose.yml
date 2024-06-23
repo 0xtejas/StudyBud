@@ -12,7 +12,7 @@ services:
       - ./mysql/.env
   backend:
     container_name: backend
-    image: ghcr.io/0xtejas/studybud:latest
+    image: ghcr.io/0xtejas/studybud:k8-latest
     build: .
     restart: unless-stopped
     expose:
