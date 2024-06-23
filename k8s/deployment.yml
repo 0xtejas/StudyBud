@@ -32,6 +32,7 @@ spec:
         - name: nginx-config
           mountPath: /etc/nginx/conf.d
       - name: studybud
+        imagePullPolicy: Always
         image: ghcr.io/0xtejas/studybud:k8-latest
         ports:
         - containerPort: 8080
