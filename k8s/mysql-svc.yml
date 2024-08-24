@@ -3,15 +3,9 @@ kind: Service
 metadata:
   name: mysql
 spec:
+  clusterIP: None
   selector:
-    app: studybud
+    app: mysql
   ports:
-    - name: mysql
-      protocol: TCP
-      port: 3306
-      targetPort: 3306
-    - name: mysql-ssl
-      protocol: TCP
-      port: 33060
-      targetPort: 33060
-  type: ClusterIP
+    - port: 3306
+      name: mysql

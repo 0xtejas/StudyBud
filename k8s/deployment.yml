@@ -56,32 +56,6 @@ spec:
           mountPath: /var/www/html/static
         - name: media
           mountPath: /usr/src/app/media
-      - name: mysql
-        image: mysql:latest
-        ports:
-        - containerPort: 3306
-        - containerPort: 33060
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: MYSQL_ROOT_PASSWORD
-        - name: MYSQL_DATABASE
-          valueFrom:
-            secretKeyRef:
-              name: mysql-db
-              key: MYSQL_DATABASE
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
-          limits:
-            cpu: 1500m
-            memory: 512Mi
-        volumeMounts:
-        - name: mysql-pvc
-          mountPath: /var/lib/mysql
       imagePullSecrets:
       - name: ghcr-credentials
       volumes:
@@ -91,9 +65,6 @@ spec:
       - name: media
         persistentVolumeClaim:
           claimName: media-pvc
-      - name: mysql-pvc
-        persistentVolumeClaim:
-          claimName: mysql-pvc
       - name: nginx-config
         configMap:
           name: nginx-config
